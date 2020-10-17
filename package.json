@@ -1,14 +1,14 @@
 {
   "name": "express-mesto",
   "version": "1.0.0",
-  "description": "`/public` — статика, полученная в результате билда фронтенд-приложения на Реакте  \r `/data` — JSON-файлы для временной эмуляции работы с базой данных  \r `/routes` — папка с файлами роутера",
+  "description": "mesto",
   "main": "app.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mobidikt/express-mesto.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Kirill Metsker",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Mobidikt/express-mesto/issues"
