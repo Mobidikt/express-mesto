@@ -1,35 +1,43 @@
-const path = require("path");
-const readFile = require("../utils/read-file.js");
+const User = require('../models/user');
 
-const dataUsers = path.join(__dirname, "..", "data", "users.json");
-
-const getUsers = (req, res) => {
-  readFile(dataUsers)
-    .then((data) => res.send(data))
-    .catch((err) => {
-      console.log(`Ошибка: ${err}`);
-      res.status(500).send({ message: "Ошибка сервера" });
-    });
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.status(200).send(users);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 };
 
-const getUser = (req, res) => {
-  const { id } = req.params;
-  console.log(req.params);
-  readFile(dataUsers)
-    .then((data) => {
-      const userRes = data.find((user) => user._id === id);
-      return userRes;
-    })
+const getUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ id: req.params.id });
+    if (!user) {
+      return res.status(404).send({ message: 'Нет пользователя с таким id' });
+    }
+    return res.status(200).send(user);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+};
+
+const createUser = (req, res) => {
+  console.log(req.body);
+  const { name, about, avatar } = req.body;
+  User.create({ name, about, avatar })
     .then((user) => {
-      if (!user) {
-        return res.status(404).send({ message: "Нет пользователя с таким id" });
-      }
-      return res.send(user);
+      res.status(200).send(user);
     })
     .catch((err) => {
-      console.log(`Ошибка: ${err}`);
-      res.status(500).send({ message: "Ошибка сервера" });
+      res.status(500).send(err);
     });
+  // const { name, about, avatar } = req.body;
+  // try {
+  //   const user = await User.create({ name, about, avatar });
+  //   res.status(200).send(user);
+  // } catch (err) {
+  //   res.status(400).send(err);
+  // }
 };
 
-module.exports = { getUsers, getUser };
+module.exports = { getUsers, getUser, createUser };

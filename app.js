@@ -21,6 +21,12 @@ mongoose.connect(mongoDbUrl, mongoConnectOptions)
     console.log(`Ошибка при подключении базы данных: ${err}`);
   });
 
+// app.use((req, res, next) => {
+//   req.user = { _id: 'dbfe53c3c4d568240378b0c6' };
+
+//   next();
+// });
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(routes);
 
