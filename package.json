@@ -15,7 +15,8 @@
   },
   "homepage": "https://github.com/Mobidikt/express-mesto#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^5.10.11"
   },
   "scripts": {
     "start": "node app.js",
