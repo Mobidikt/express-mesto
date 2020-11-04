@@ -57,31 +57,35 @@ const createUser = async (req, res) => {
   }
 };
 
-// const updateUser = async (req, res) {
-//   try {
+const updateUser = (req, res) => {
+  const { name, about, avatar } = req.body;
+  User.findByIdAndUpdate(req.user._id, { name, about, avatar }, {
+    new: true,
+    runValidators: true,
+  }).orFail()
+    .catch(() => {
+      res.status(500).send({ message: 'Ошибка на сервере' });
+    })
+    .then((user) => res.send(user));
+};
 
-//   } catch (err) {
-
-//   }
-// };
-
-// const updateUserAvatar = async (req, res) {
-//  try {
-//     const { avatar } = req.body;
-//     const newAvatar = await User.findByIdAndUpdate(req.user._id, { avatar }, {
-//       new: true,
-//       runValidators: true,
-//     } );
-//     return res.status(200).send(newAvatar);
-//   } catch (err) {
-
-//   }
-// };
+const updateUserAvatar = (req, res) => {
+  const { avatar } = req.body;
+  // const newAvatar =
+  User.findByIdAndUpdate(req.user._id, { avatar }, {
+    new: true,
+    runValidators: true,
+  }).orFail()
+    .catch(() => {
+      res.status(500).send({ message: 'Ошибка на сервере' });
+    })
+    .then((newAvatar) => res.send(newAvatar));
+};
 
 module.exports = {
   getUsers,
   getUser,
   createUser,
-  // updateUser,
-  // updateUserAvatar,
+  updateUser,
+  updateUserAvatar,
 };
