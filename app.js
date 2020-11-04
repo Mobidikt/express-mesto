@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const path = require('path');
 const routes = require('./routes/index.js');
 
+// const path = require('path');
 const { PORT = 3000 } = process.env;
 const app = express();
 
@@ -21,13 +21,13 @@ mongoose.connect(mongoDbUrl, mongoConnectOptions)
     console.log(`Ошибка при подключении базы данных: ${err}`);
   });
 
-// app.use((req, res, next) => {
-//   req.user = { _id: 'dbfe53c3c4d568240378b0c6' };
-
-//   next();
-// });
-
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(routes);
+app.use((req, res, next) => {
+  req.user = { _id: 'dbfe53c3c4d568240378b0c6' };
+
+  next();
+});
+
+// app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(PORT, () => console.log(`server port ${PORT}`));
