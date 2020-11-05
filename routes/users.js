@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const bodyParser = require('body-parser');
+
 const {
   getUsers,
   getUser,
@@ -9,8 +11,8 @@ const {
 
 router.get('/users', getUsers);
 router.get('/users/:userId', getUser);
-router.post('/users', createUser);
-router.patch('/users/me', updateUser);
-router.patch('/users/me/avatar', updateUserAvatar);
+router.post('/users', bodyParser.json(), createUser);
+router.patch('/users/me', bodyParser.json(), updateUser);
+router.patch('/users/me/avatar', bodyParser.json(), updateUserAvatar);
 
 module.exports = router;

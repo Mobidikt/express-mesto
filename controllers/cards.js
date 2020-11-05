@@ -23,40 +23,39 @@ const createCard = async (req, res) => {
 };
 
 const deleteCard = async (req, res) => {
-  Card.findByIdAndDelete(req.params.cardId)
-    .orFail()
-    .then(() => res.status(200).send({ message: 'Карточка удалена' }))
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Переданы некорректные данные' });
-      } else if (err.name === 'DocumentNotFoundError') {
-        res.status(404).send({ message: 'Нет карточки с таким id' });
-      } else {
-        res.status(500).send({ message: 'Ошибка на сервере' });
-      }
-    });
+  try {
+    await Card.findByIdAndDelete(req.params.cardId).orFail();
+    return res.status(200).send({ message: 'Карточка удалена' });
+  } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(400).send({ message: 'Переданы некорректные данные' });
+    } if (err.name === 'DocumentNotFoundError') {
+      return res.status(404).send({ message: 'Нет карточки с таким id' });
+    } return res.status(500).send({ message: 'Ошибка на сервере' });
+  }
 };
 
-const likeCard = (req, res) => {
-  Card.findByIdAndUpdate(req.params.cardId,
-    { $addToSet: { likes: req.user._id } },
-    { new: true })
-    .orFail()
-    .catch(() => {
-      res.status(500).send({ message: 'Ошибка на сервере' });
-    })
-    .then((likes) => res.send({ data: likes }));
+const likeCard = async (req, res) => {
+  try {
+    const likes = await Card.findByIdAndUpdate(req.params.cardId,
+      { $addToSet: { likes: req.user._id } },
+      { new: true })
+      .orFail();
+    return res.status(200).send({ data: likes });
+  } catch (err) {
+    return res.status(500).send({ message: 'Ошибка на сервере' });
+  }
 };
 
-const dislikeCard = (req, res) => {
-  Card.findByIdAndUpdate(req.params.cardId,
-    { $pull: { likes: req.user._id } },
-    { new: true })
-    .orFail()
-    .catch(() => {
-      res.status(500).send({ message: 'Ошибка на сервере' });
-    })
-    .then((likes) => res.send({ data: likes }));
+const dislikeCard = async (req, res) => {
+  try {
+    const likes = await Card.findByIdAndUpdate(req.params.cardId,
+      { $pull: { likes: req.user._id } },
+      { new: true }).orFail();
+    return res.status(200).send({ data: likes });
+  } catch (err) {
+    return res.status(500).send({ message: 'Ошибка на сервере' });
+  }
 };
 
 module.exports = {
