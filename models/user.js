@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require('mongoose').set('debug', true);
 
 const userSchema = new Schema({
   name: {
@@ -18,6 +18,6 @@ const userSchema = new Schema({
     required: true,
     match: [/(https?|ftp|file):\/\/(www\.)?([-a-z0-9]+\.)([0-9a-z].*)/, 'введён некорректный URL'],
   },
-});
+}, { versionKey: false });
 
 module.exports = model('user', userSchema);

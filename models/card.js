@@ -25,6 +25,6 @@ const cardSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-});
+}, { versionKey: false });
 
 module.exports = model('card', cardSchema);
