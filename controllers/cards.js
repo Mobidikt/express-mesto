@@ -43,6 +43,11 @@ const likeCard = async (req, res) => {
       .orFail();
     return res.status(200).send({ data: likes });
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(400).send({ message: 'Переданы некорректные данные' });
+    } if (err.name === 'DocumentNotFoundError') {
+      return res.status(404).send({ message: 'Нет карточки с таким id' });
+    }
     return res.status(500).send({ message: 'Ошибка на сервере' });
   }
 };
@@ -54,6 +59,11 @@ const dislikeCard = async (req, res) => {
       { new: true }).orFail();
     return res.status(200).send({ data: likes });
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(400).send({ message: 'Переданы некорректные данные' });
+    } if (err.name === 'DocumentNotFoundError') {
+      return res.status(404).send({ message: 'Нет карточки с таким id' });
+    }
     return res.status(500).send({ message: 'Ошибка на сервере' });
   }
 };

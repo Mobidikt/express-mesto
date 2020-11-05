@@ -46,6 +46,9 @@ const updateUser = async (req, res) => {
     }).orFail();
     return res.status(200).send(updateInfo);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).send({ message: 'Нет пользователя с таким id' });
+    }
     if (err.name === 'ValidationError') {
       return res.status(400).send({ message: 'Переданы некорректные данные' });
     }
@@ -62,6 +65,9 @@ const updateUserAvatar = async (req, res) => {
     }).orFail();
     return res.status(200).send(newAvatar);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).send({ message: 'Нет пользователя с таким id' });
+    }
     if (err.name === 'ValidationError') {
       return res.status(400).send({ message: 'Переданы некорректные данные' });
     }
